@@ -45,6 +45,19 @@ func ConvInt64(in string, out any) error {
 	return nil
 }
 
+func ConvInt(in string, out any) error {
+	outp, ok := out.(*int)
+	if !ok {
+		return fmt.Errorf("ConvInt: output %v not of type *int", out)
+	}
+	i, err := strconv.ParseInt(in, 0, 64)
+	if err != nil {
+		return fmt.Errorf("ConvInt: failed to parse input %v", in)
+	}
+	*outp = int(i)
+	return nil
+}
+
 func ConvFloat64(in string, out any) error {
 	outp, ok := out.(*float64)
 	if !ok {
