@@ -1,6 +1,7 @@
 package convm
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -64,5 +65,18 @@ func TestMulti2(t *testing.T) {
 	}
 	if f != 35.5 {
 		t.Errorf("f %v != 35.5", f)
+	}
+}
+
+func TestMatching(t *testing.T) {
+	in := []string{"3.5", "33.0", "100"}
+	var buf []float64
+	err := Matching(in, &buf)
+	if err != nil {
+		panic(err)
+	}
+	expect := []float64{3.5, 33.0, 100}
+	if !reflect.DeepEqual(buf, expect) {
+		t.Errorf("buf %v != expect %v", buf, expect)
 	}
 }
