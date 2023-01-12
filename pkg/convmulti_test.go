@@ -5,18 +5,20 @@ import (
 )
 
 func TestMulti(t *testing.T) {
-	in := []string{"Hello", "23", "45", "35.5"}
+	in := []string{"Hello", "23", "45", "earlobe", "35.5", "true", "33.3+29.5i"}
 	var s string
 	var i int64
 	var i2 int
 	var f float64
-	out := []any{&s, &i, &i2, &f}
+	var b bool
+	var c complex128
+	out := []any{&s, &i, &i2, Nil{}, &f, &b, &c}
 	n, err := Multi(in, out...)
 	if err != nil {
 		panic(err)
 	}
-	if n != 4 {
-		t.Errorf("n %v != 4", n)
+	if n != 7 {
+		t.Errorf("n %v != 7", n)
 	}
 	if s != "Hello" {
 		t.Errorf("s %v != \"Hello\"", s)
@@ -29,6 +31,12 @@ func TestMulti(t *testing.T) {
 	}
 	if f != 35.5 {
 		t.Errorf("f %v != 35.5", f)
+	}
+	if b != true {
+		t.Errorf("b %v != true", b)
+	}
+	if c != 33.3 + 29.5i {
+		t.Errorf("c %v != 33.3 + 29.5i", c)
 	}
 }
 
