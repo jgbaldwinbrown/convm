@@ -8,15 +8,30 @@ import (
 type Nil struct{}
 
 func Conv(in string, ret any) error {
+	var err error
 	switch retc := ret.(type) {
-		case *string: return Str(in, retc)
-		case *int64: return Int64(in, retc)
-		case *int: return Int(in, retc)
-		case *float64: return Float64(in, retc)
-		case *bool: return Bool(in, retc)
-		case *complex128: return Complex(in, retc)
-		case Nil: return nil
-		default: return fmt.Errorf("Conv: return value %v %#v not a compatible pointer", retc, retc)
+		case *string:
+			*retc, err = Str(in)
+			return err
+		case *int64:
+			*retc, err = Int64(in)
+			return err
+		case *int:
+			*retc, err = Int(in)
+			return err
+		case *float64:
+			*retc, err = Float64(in)
+			return err
+		case *bool:
+			*retc, err = Bool(in)
+			return err
+		case *complex128:
+			*retc, err = Complex(in)
+			return err
+		case Nil:
+			return nil
+		default:
+			return fmt.Errorf("Conv: return value %v %#v not a compatible pointer", retc, retc)
 	}
 }
 
@@ -33,52 +48,47 @@ func Multi(in []string, out ...any) (int, error) {
 	return len(in), nil
 }
 
-func Str(in string, ret *string) error {
-	*ret = in
-	return nil
+func Str(in string) (string, error) {
+	return in, nil
 }
 
-func Int64(in string, ret *int64) error {
-	var err error
-	*ret, err = strconv.ParseInt(in, 0, 64)
+func Int64(in string) (int64, error) {
+	out, err := strconv.ParseInt(in, 0, 64)
 	if err != nil {
-		return fmt.Errorf("ConvInt64: failed to parse input %v", in)
+		return 0, fmt.Errorf("ConvInt64: failed to parse input %v", in)
 	}
-	return nil
+	return out, nil
 }
 
-func Int(in string, ret *int) error {
+func Int(in string) (int, error) {
 	i, err := strconv.ParseInt(in, 0, strconv.IntSize)
 	if err != nil {
-		return fmt.Errorf("ConvInt: failed to parse input %v", in)
+		return 0, fmt.Errorf("ConvInt: failed to parse input %v", in)
 	}
-	*ret = int(i)
-	return nil
+	out := int(i)
+	return out, nil
 }
 
-func Float64(in string, ret *float64) error {
-	var err error
-	*ret, err = strconv.ParseFloat(in, 64)
+func Float64(in string) (float64, error) {
+	out, err := strconv.ParseFloat(in, 64)
 	if err != nil {
-		return fmt.Errorf("ConvFloat64: failed to parse input %v", in)
+		return 0, fmt.Errorf("ConvFloat64: failed to parse input %v", in)
 	}
-	return nil
+	return out, nil
 }
 
-func Bool(in string, ret *bool) error {
-	var err error
-	*ret, err = strconv.ParseBool(in)
+func Bool(in string) (bool, error) {
+	out, err := strconv.ParseBool(in)
 	if err != nil {
-		return fmt.Errorf("ConvBool: failed to parse input %v", in)
+		return false, fmt.Errorf("ConvBool: failed to parse input %v", in)
 	}
-	return nil
+	return out, nil
 }
 
-func Complex(in string, ret *complex128) error {
-	var err error
-	*ret, err = strconv.ParseComplex(in, 128)
+func Complex(in string) (complex128, error) {
+	out, err := strconv.ParseComplex(in, 128)
 	if err != nil {
-		return fmt.Errorf("ConvComplex: failed to parse input %v", in)
+		return 0, fmt.Errorf("ConvComplex: failed to parse input %v", in)
 	}
-	return nil
+	return out, nil
 }
