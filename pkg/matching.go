@@ -4,9 +4,7 @@ import (
 	"fmt"
 )
 
-type Parser[T any] func(string) (T, error)
-
-func ParseMatching[T any](in []string, buf []T, parse Parser[T]) (out []T, err error) {
+func ParseMatching[T any](in []string, buf []T, parse ParseFunc[T]) (out []T, err error) {
 	buf = buf[:0]
 	for _, str := range in {
 		val, err := parse(str)

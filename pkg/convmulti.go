@@ -92,3 +92,27 @@ func Complex(in string) (complex128, error) {
 	}
 	return out, nil
 }
+
+type Parser func(string) error
+type ParseFunc[T any] func(string) (T, error)
+
+func MakeParser[T any](ptr *T, f ParseFunc[T]) Parser {
+	return func(s string) error {
+		var err error
+		*ptr, err = f(s)
+		return err
+	}
+}
+
+func Generic(in []string, parsers ...Parser) (int, error) {
+	if len(in) != len(parsers) {
+		return 0, fmt.Errorf("ConvMulti: len(in) %v != len(parsers) %v\n", len(in), len(parsers))
+	}
+	for i, str := range in {
+		err := parsers[i](str)
+		if err != nil {
+			return i, err
+		}
+	}
+	return len(in), nil
+}
