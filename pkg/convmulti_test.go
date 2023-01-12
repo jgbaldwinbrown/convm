@@ -87,7 +87,7 @@ func TestGeneric(t *testing.T) {
 	var i int64
 	var i2 int
 	var f float64
-	n, err := Generic(in, MakeParser(&s, Str), MakeParser(&i, Int64), MakeParser(&i2, Int), MakeParser(&f, Float64))
+	n, err := Generic(in, ParsePtr(&s, Str), ParsePtr(&i, Int64), ParsePtr(&i2, Int), ParsePtr(&f, Float64))
 	if err != nil {
 		panic(err)
 	}
