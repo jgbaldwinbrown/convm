@@ -16,7 +16,7 @@ func Conv(in string, ret any) error {
 		case *bool: return Bool(in, retc)
 		case *complex128: return Complex(in, retc)
 		case Nil: return nil
-		default: return fmt.Errorf("Conv: return value %v not a compatible pointer", retc)
+		default: return fmt.Errorf("Conv: return value %v %#v not a compatible pointer", retc, retc)
 	}
 }
 
